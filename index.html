@@ -1,0 +1,1782 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MFA Rates - Media Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Modern Color Scheme */
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --danger: #ef233c;
+            --success: #4cc9f0;
+            --warning: #f77f00;
+            --dark: #1b263b;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --card-bg: #ffffff;
+            --bg-color: #f8f9fa;
+            --text-color: #2b2d42;
+            --film: #c62828;
+            --show: #1565c0;
+            --anime: #2e7d32;
+        }
+
+        /* Dark Mode Colors */
+        .dark-mode {
+            --dark: #f8f9fa;
+            --light: #1b263b;
+            --gray: #adb5bd;
+            --card-bg: #2b2d42;
+            --bg-color: #1b263b;
+            --text-color: #f8f9fa;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Bebas Neue', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        body[dir="rtl"] {
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            direction: rtl;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Header */
+        header {
+            margin-bottom: 2.5rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .header-controls {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            gap: 1rem;
+        }
+
+        body[dir="rtl"] .header-controls {
+            right: auto;
+            left: 0;
+        }
+
+        .app-title {
+            font-size: 3rem;
+            font-weight: 400;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .app-subtitle {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .theme-toggle:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Language Toggle */
+        .language-toggle {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .language-toggle:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Navigation Tabs */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: none;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--gray);
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.2);
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+        }
+
+        /* Search and Filter */
+        .search-filter {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            border: 1px solid #dee2e6;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        body[dir="rtl"] .search-input {
+            padding: 0.75rem 3rem 0.75rem 1rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        body[dir="rtl"] .search-icon {
+            left: auto;
+            right: 1rem;
+        }
+
+        .clear-search {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            display: none;
+        }
+
+        body[dir="rtl"] .clear-search {
+            right: auto;
+            left: 1rem;
+        }
+
+        .sort-select {
+            padding: 0.75rem 1rem;
+            border: 1px solid #dee2e6;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            min-width: 180px;
+        }
+
+        /* Stats Cards */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-title {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Media Grid */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Media Card */
+        .media-card {
+            background: var(--card-bg);
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .media-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .media-poster {
+            height: 269.64px;
+            width: 172.5;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .media-poster.no-poster {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f1f3f5;
+            color: var(--gray);
+        }
+
+        .media-poster.no-poster i {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .media-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        body[dir="rtl"] .media-badge {
+            left: auto;
+            right: 1rem;
+        }
+
+        .badge-film {
+            background: rgba(198, 40, 40, 0.1);
+            color: var(--film);
+        }
+
+        .badge-show {
+            background: rgba(21, 101, 192, 0.1);
+            color: var(--show);
+        }
+
+        .badge-anime {
+            background: rgba(46, 125, 50, 0.1);
+            color: var(--anime);
+        }
+
+        .media-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .media-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .media-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .media-rating {
+            margin-bottom: 1rem;
+        }
+
+        .stars {
+            color: #ffc107;
+            font-size: 1.1rem;
+        }
+
+        .media-notes {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            flex: 1;
+        }
+
+        .media-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .edit-btn:hover {
+            color: var(--primary);
+        }
+
+        .delete-btn:hover {
+            color: var(--danger);
+        }
+
+        /* Add Button */
+        .add-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            z-index: 100;
+        }
+
+        body[dir="rtl"] .add-btn {
+            right: auto;
+            left: 2rem;
+        }
+
+        .add-btn:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 6px 16px rgba(67, 97, 238, 0.4);
+        }
+
+        /* Empty State */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--gray);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            color: #e9ecef;
+            margin-bottom: 1rem;
+        }
+
+        .empty-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Modals */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: transparent;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.2s ease;
+        }
+
+        body[dir="rtl"] .close-btn {
+            right: auto;
+            left: 1.5rem;
+        }
+
+        .close-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--text-color);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #dee2e6;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            background: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .poster-upload {
+            flex: 0 0 180px;
+        }
+
+        .poster-preview {
+            width: 100%;
+            height: 240px;
+            border-radius: 0.5rem;
+            border: 2px dashed #dee2e6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .poster-preview:hover {
+            border-color: var(--primary);
+        }
+
+        .poster-preview i {
+            font-size: 2.5rem;
+            color: #ced4da;
+            margin-bottom: 0.5rem;
+        }
+
+        .poster-preview span {
+            font-size: 0.9rem;
+            color: var(--gray);
+            text-align: center;
+        }
+
+        .upload-btn {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background: #5a5a5a;
+            border: none;
+            border-radius: 0.5rem;
+            color: var(--text-color);
+            font-weight: 500;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .upload-btn:hover {
+            background: #2b2d42;
+        }
+
+        .remove-poster-btn {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background: #fff5f5;
+            border: none;
+            border-radius: 0.5rem;
+            color: var(--danger);
+            font-weight: 500;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 0.5rem;
+        }
+
+        .remove-poster-btn:hover {
+            background: #ffe3e3;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 0.5rem;
+            margin: 0.5rem 0 1rem;
+        }
+
+        .star-rating i {
+            font-size: 1.75rem;
+            color: #e9ecef;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .star-rating i.active {
+            color: #ffc107;
+        }
+
+        .star-rating i.hover {
+            color: #ffc107;
+            opacity: 0.7;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #5a5a5a;
+            color: var(--text-color);
+        }
+
+        .btn-secondary:hover {
+            background: #2b2d42;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #d90429;
+            transform: translateY(-2px);
+        }
+
+        /* Confirmation Modal */
+        .confirm-modal .modal-content {
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .confirm-message {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            color: var(--text-color);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--dark);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(-10px);
+        }
+
+        .toast.success {
+            background: var(--success);
+        }
+
+        .toast.error {
+            background: var(--danger);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem 1rem;
+            }
+
+            .app-title {
+                font-size: 2rem;
+            }
+
+            .media-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-filter {
+                flex-direction: column;
+            }
+
+            .sort-select {
+                width: 100%;
+            }
+
+            .header-controls {
+                position: static;
+                justify-content: center;
+                margin-bottom: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-content {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-controls">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                    <span>Dark Mode</span>
+                </button>
+                <button class="language-toggle" id="languageToggle">العربية</button>
+            </div>
+            <h1 class="app-title">MFA Rates</h1>
+            <p class="app-subtitle">Track and rate your favorite media</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="all">All</button>
+            <button class="tab-btn" data-tab="film">Films</button>
+            <button class="tab-btn" data-tab="show">TV Shows</button>
+            <button class="tab-btn" data-tab="anime">Anime</button>
+        </div>
+
+        <div class="search-filter">
+            <div class="search-box">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" id="search" placeholder="Search media...">
+                <button class="clear-search" id="clearSearch"><i class="fas fa-times"></i></button>
+            </div>
+            <select class="sort-select" id="sort">
+                <option value="date-added">Date Added</option>
+                <option value="title">Title</option>
+                <option value="rating">Rating</option>
+                <option value="date-watched">Date Watched</option>
+            </select>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-title">Total</div>
+                <div class="stat-value" id="totalCount">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Films</div>
+                <div class="stat-value" id="filmCount">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">TV Shows</div>
+                <div class="stat-value" id="showCount">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Anime</div>
+                <div class="stat-value" id="animeCount">0</div>
+            </div>
+        </div>
+
+        <div class="media-grid" id="mediaGrid">
+            <!-- Media items will be inserted here -->
+        </div>
+
+        <button class="add-btn" id="addBtn">
+            <i class="fas fa-plus"></i>
+        </button>
+
+        <!-- Add/Edit Modal -->
+        <div class="modal" id="mediaModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modalTitle">Add New Media</h3>
+                    <button class="close-btn" id="closeModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="mediaForm">
+                        <div class="form-row">
+                            <div class="poster-upload">
+                                <div class="poster-preview" id="posterPreview">
+                                    <i class="fas fa-image"></i>
+                                    <span>No poster selected</span>
+                                </div>
+                                <label for="posterUpload" class="upload-btn">
+                                    <i class="fas fa-upload"></i> Choose Poster
+                                </label>
+                                <input type="file" id="posterUpload" class="file-input" accept="image/*">
+                                <button type="button" class="remove-poster-btn" id="removePoster">Remove Poster</button>
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label for="mediaTitle" class="form-label">Title*</label>
+                                <input type="text" id="mediaTitle" class="form-control" required>
+                                
+                                <label for="mediaType" class="form-label">Type*</label>
+                                <select id="mediaType" class="form-control" required>
+                                    <option value="film">Film</option>
+                                    <option value="show">TV Show</option>
+                                    <option value="anime">Anime</option>
+                                </select>
+                                
+                                <label class="form-label">Your Rating</label>
+                                <div class="star-rating" id="starRating">
+                                    <i class="far fa-star" data-rating="1"></i>
+                                    <i class="far fa-star" data-rating="2"></i>
+                                    <i class="far fa-star" data-rating="3"></i>
+                                    <i class="far fa-star" data-rating="4"></i>
+                                    <i class="far fa-star" data-rating="5"></i>
+                                </div>
+                                <input type="hidden" id="mediaRating" value="0">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="watchDate" class="form-label">Date Watched</label>
+                            <input type="date" id="watchDate" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="mediaNotes" class="form-label">Notes</label>
+                            <textarea id="mediaNotes" class="form-control" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                    <button class="btn btn-primary" id="saveBtn">Save</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirmation Modal -->
+        <div class="modal confirm-modal" id="confirmModal">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p class="confirm-message">Are you sure you want to delete this item?</p>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" id="cancelDelete">Cancel</button>
+                        <button class="btn btn-danger" id="confirmDelete">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div class="toast" id="toast"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    // DOM Elements
+    const elements = {
+        mediaGrid: document.getElementById('mediaGrid'),
+        addBtn: document.getElementById('addBtn'),
+        mediaModal: document.getElementById('mediaModal'),
+        confirmModal: document.getElementById('confirmModal'),
+        closeModal: document.getElementById('closeModal'),
+        cancelBtn: document.getElementById('cancelBtn'),
+        mediaForm: document.getElementById('mediaForm'),
+        saveBtn: document.getElementById('saveBtn'),
+        searchInput: document.getElementById('search'),
+        clearSearch: document.getElementById('clearSearch'),
+        sortSelect: document.getElementById('sort'),
+        tabButtons: document.querySelectorAll('.tab-btn'),
+        posterUpload: document.getElementById('posterUpload'),
+        posterPreview: document.getElementById('posterPreview'),
+        removePoster: document.getElementById('removePoster'),
+        cancelDelete: document.getElementById('cancelDelete'),
+        confirmDelete: document.getElementById('confirmDelete'),
+        toast: document.getElementById('toast'),
+        languageToggle: document.getElementById('languageToggle'),
+        themeToggle: document.getElementById('themeToggle'),
+        themeIcon: document.getElementById('themeToggle').querySelector('i'),
+        themeText: document.getElementById('themeToggle').querySelector('span'),
+        stats: {
+            total: document.getElementById('totalCount'),
+            film: document.getElementById('filmCount'),
+            show: document.getElementById('showCount'),
+            anime: document.getElementById('animeCount')
+        },
+        form: {
+            title: document.getElementById('mediaTitle'),
+            type: document.getElementById('mediaType'),
+            rating: document.getElementById('mediaRating'),
+            date: document.getElementById('watchDate'),
+            notes: document.getElementById('mediaNotes')
+        },
+        stars: document.querySelectorAll('#starRating i')
+    };
+
+    // App State
+    const state = {
+        mediaItems: [],
+        currentItemId: null,
+        posterFile: null,
+        itemToDelete: null,
+        currentLanguage: 'en',
+        translations: {
+            en: {
+                appTitle: "MFA Rates",
+                appSubtitle: "Track and rate your favorite media",
+                tabs: ["All", "Films", "TV Shows", "Anime"],
+                searchPlaceholder: "Search media...",
+                sortOptions: ["Date Added", "Title", "Rating", "Date Watched"],
+                stats: ["Total", "Films", "TV Shows", "Anime"],
+                modal: {
+                    addTitle: "Add New Media",
+                    editTitle: "Edit Media",
+                    labels: ["Title*", "Type*", "Your Rating", "Date Watched", "Notes"],
+                    typeOptions: ["Film", "TV Show", "Anime"],
+                    posterText: "No poster selected",
+                    uploadText: "Choose Poster",
+                    removeText: "Remove Poster",
+                    buttons: ["Cancel", "Save"]
+                },
+                confirm: {
+                    message: "Are you sure you want to delete this item?",
+                    buttons: ["Cancel", "Delete"]
+                },
+                toast: {
+                    added: "Media added successfully",
+                    updated: "Media updated successfully",
+                    deleted: "Media deleted successfully",
+                    error: "Please fill all required fields"
+                },
+                empty: {
+                    icon: "fas fa-film",
+                    title: "No media found",
+                    message: "Try adding some media or adjust your filters"
+                },
+                theme: {
+                    dark: "Dark Mode",
+                    light: "Light Mode"
+                }
+            },
+            ar: {
+                appTitle: "MFA يقيم",
+                appSubtitle: "تتبع وقيم وسائطك المفضلة",
+                tabs: ["الكل", "أفلام", "مسلسلات", "أنمي"],
+                searchPlaceholder: "ابحث في الوسائط...",
+                sortOptions: ["تاريخ الإضافة", "العنوان", "التقييم", "تاريخ المشاهدة"],
+                stats: ["الإجمالي", "أفلام", "مسلسلات", "أنمي"],
+                modal: {
+                    addTitle: "إضافة وسائط جديدة",
+                    editTitle: "تعديل الوسائط",
+                    labels: ["العنوان*", "النوع*", "تقييمك", "تاريخ المشاهدة", "ملاحظات"],
+                    typeOptions: ["فيلم", "مسلسل", "أنمي"],
+                    posterText: "لا يوجد ملصق",
+                    uploadText: "اختر ملصق",
+                    removeText: "إزالة الملصق",
+                    buttons: ["إلغاء", "حفظ"]
+                },
+                confirm: {
+                    message: "هل أنت متأكد أنك تريد حذف هذا العنصر؟",
+                    buttons: ["إلغاء", "حذف"]
+                },
+                toast: {
+                    added: "تمت إضافة الوسائط بنجاح",
+                    updated: "تم تحديث الوسائط بنجاح",
+                    deleted: "تم حذف الوسائط بنجاح",
+                    error: "الرجاء ملء جميع الحقول المطلوبة"
+                },
+                empty: {
+                    icon: "fas fa-film",
+                    title: "لا توجد وسائط",
+                    message: "حاول إضافة بعض الوسائط أو تعديل الفلاتر"
+                },
+                theme: {
+                    dark: "الوضع المظلم",
+                    light: "الوضع الفاتح"
+                }
+            }
+        }
+    };
+
+    // Initialize the app
+    init();
+
+    function init() {
+        loadDataFromStorage();
+        loadPreferences();
+        renderMediaGrid();
+        updateStats();
+        setupEventListeners();
+    }
+
+    // Load data from localStorage
+    function loadDataFromStorage() {
+        try {
+            const savedData = localStorage.getItem('mediaItems');
+            state.mediaItems = savedData ? JSON.parse(savedData) : [];
+        } catch (error) {
+            console.error('Error loading data from localStorage:', error);
+            state.mediaItems = [];
+        }
+    }
+
+    // Load user preferences
+    function loadPreferences() {
+        // Language preference
+        const savedLanguage = localStorage.getItem('mediaTrackerLanguage') || 'en';
+        setLanguage(savedLanguage);
+        
+        // Theme preference
+        const savedTheme = localStorage.getItem('theme') || 
+                          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        setTheme(savedTheme);
+    }
+
+    // Language Functions
+    function setLanguage(lang) {
+        state.currentLanguage = lang;
+        document.documentElement.lang = lang;
+        document.body.dir = lang === 'ar' ? 'rtl' : 'ltr';
+        updateUIText();
+        updateLanguageButton();
+        updateThemeText();
+        localStorage.setItem('mediaTrackerLanguage', lang);
+    }
+
+    function updateUIText() {
+        const t = state.translations[state.currentLanguage];
+        
+        // Update app title and subtitle
+        document.querySelector('.app-title').textContent = t.appTitle;
+        document.querySelector('.app-subtitle').textContent = t.appSubtitle;
+        
+        // Update tabs
+        elements.tabButtons.forEach((btn, index) => {
+            btn.textContent = t.tabs[index];
+        });
+        
+        // Update search placeholder
+        elements.searchInput.placeholder = t.searchPlaceholder;
+        
+        // Update sort options
+        Array.from(elements.sortSelect.options).forEach((option, index) => {
+            option.textContent = t.sortOptions[index];
+        });
+        
+        // Update stats titles
+        document.querySelectorAll('.stat-title').forEach((el, index) => {
+            el.textContent = t.stats[index];
+        });
+
+        // Update modal content
+        updateModalText();
+    }
+
+    function updateModalText() {
+        const t = state.translations[state.currentLanguage];
+        
+        // Update form labels
+        const labels = document.querySelectorAll('.form-label');
+        labels.forEach((label, index) => {
+            if (index < t.modal.labels.length) {
+                label.textContent = t.modal.labels[index];
+            }
+        });
+
+        // Update type options
+        const typeOptions = elements.form.type.options;
+        Array.from(typeOptions).forEach((option, index) => {
+            if (index < t.modal.typeOptions.length) {
+                option.textContent = t.modal.typeOptions[index];
+            }
+        });
+
+        // Update buttons
+        elements.cancelBtn.textContent = t.modal.buttons[0];
+        elements.saveBtn.textContent = t.modal.buttons[1];
+        elements.cancelDelete.textContent = t.confirm.buttons[0];
+        elements.confirmDelete.textContent = t.confirm.buttons[1];
+
+        // Update other text
+        document.querySelector('.upload-btn').innerHTML = `<i class="fas fa-upload"></i> ${t.modal.uploadText}`;
+        elements.removePoster.textContent = t.modal.removeText;
+        
+        // Update poster preview text if no image
+        if (!elements.posterPreview.style.backgroundImage) {
+            const posterSpan = elements.posterPreview.querySelector('span');
+            if (posterSpan) {
+                posterSpan.textContent = t.modal.posterText;
+            }
+        }
+    }
+
+    function updateLanguageButton() {
+        elements.languageToggle.textContent = state.currentLanguage === 'en' ? 'العربية' : 'English';
+    }
+
+    // Theme Functions
+    function setTheme(theme) {
+        if (theme === 'dark') {
+            document.body.classList.add('dark-mode');
+            elements.themeIcon.classList.remove('fa-moon');
+            elements.themeIcon.classList.add('fa-sun');
+        } else {
+            document.body.classList.remove('dark-mode');
+            elements.themeIcon.classList.remove('fa-sun');
+            elements.themeIcon.classList.add('fa-moon');
+        }
+        updateThemeText();
+        localStorage.setItem('theme', theme);
+    }
+
+    function updateThemeText() {
+        const t = state.translations[state.currentLanguage].theme;
+        elements.themeText.textContent = document.body.classList.contains('dark-mode') ? t.light : t.dark;
+    }
+
+    function toggleTheme() {
+        const newTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
+        setTheme(newTheme);
+    }
+
+    // Event Listeners
+    function setupEventListeners() {
+        // Theme toggle
+        elements.themeToggle.addEventListener('click', toggleTheme);
+        
+        // Language toggle
+        elements.languageToggle.addEventListener('click', () => {
+            const newLang = state.currentLanguage === 'en' ? 'ar' : 'en';
+            setLanguage(newLang);
+        });
+        
+        // Add button
+        elements.addBtn.addEventListener('click', openAddModal);
+        
+        // Modal buttons
+        elements.closeModal.addEventListener('click', closeModal);
+        elements.cancelBtn.addEventListener('click', closeModal);
+        
+        // Form submission
+        elements.mediaForm.addEventListener('submit', handleFormSubmit);
+        elements.saveBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            handleFormSubmit(e);
+        });
+        
+        // Search and filter
+        elements.searchInput.addEventListener('input', handleSearch);
+        elements.clearSearch.addEventListener('click', clearSearch);
+        elements.sortSelect.addEventListener('change', renderMediaGrid);
+        
+        // Tabs
+        elements.tabButtons.forEach(btn => {
+            btn.addEventListener('click', handleTabSwitch);
+        });
+        
+        // Poster upload
+        elements.posterUpload.addEventListener('change', handlePosterUpload);
+        elements.removePoster.addEventListener('click', removePosterImage);
+        
+        // Star rating
+        elements.stars.forEach(star => {
+            star.addEventListener('click', handleStarClick);
+            star.addEventListener('mouseover', handleStarHover);
+            star.addEventListener('mouseout', handleStarMouseOut);
+        });
+        
+        // Confirmation modal
+        elements.cancelDelete.addEventListener('click', closeConfirmModal);
+        elements.confirmDelete.addEventListener('click', confirmDeleteAction);
+        
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === elements.mediaModal) closeModal();
+            if (e.target === elements.confirmModal) closeConfirmModal();
+        });
+
+        // Escape key to close modals
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (elements.mediaModal.classList.contains('active')) closeModal();
+                if (elements.confirmModal.classList.contains('active')) closeConfirmModal();
+            }
+        });
+    }
+
+    // Modal Functions
+    function openAddModal() {
+        state.currentItemId = null;
+        document.getElementById('modalTitle').textContent = 
+            state.translations[state.currentLanguage].modal.addTitle;
+        resetForm();
+        elements.mediaModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        elements.form.title.focus();
+    }
+
+    function openEditModal(id) {
+        const item = state.mediaItems.find(item => item.id === id);
+        if (!item) return;
+
+        state.currentItemId = id;
+        document.getElementById('modalTitle').textContent = 
+            state.translations[state.currentLanguage].modal.editTitle;
+        
+        // Fill form with item data
+        elements.form.title.value = item.title;
+        elements.form.type.value = item.type;
+        elements.form.date.value = item.date;
+        elements.form.notes.value = item.notes || '';
+        elements.form.rating.value = item.rating;
+        updateStars(item.rating);
+        
+        // Set poster if exists
+        if (item.poster) {
+            elements.posterPreview.style.backgroundImage = `url(${item.poster})`;
+            elements.posterPreview.innerHTML = '';
+            state.posterFile = 'existing';
+        } else {
+            resetPosterPreview();
+        }
+        
+        elements.mediaModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        elements.form.title.focus();
+    }
+
+    function closeModal() {
+        elements.mediaModal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+        resetForm();
+    }
+
+    function resetForm() {
+        elements.mediaForm.reset();
+        resetPosterPreview();
+        elements.form.rating.value = '0';
+        updateStars(0);
+        state.posterFile = null;
+    }
+
+    function resetPosterPreview() {
+        elements.posterPreview.style.backgroundImage = '';
+        const t = state.translations[state.currentLanguage];
+        elements.posterPreview.innerHTML = `
+            <i class="fas fa-image"></i>
+            <span>${t.modal.posterText}</span>
+        `;
+        elements.posterUpload.value = '';
+    }
+
+    // Confirmation Modal
+    function openConfirmModal(id) {
+        state.itemToDelete = id;
+        document.querySelector('.confirm-message').textContent = 
+            state.translations[state.currentLanguage].confirm.message;
+        elements.confirmModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeConfirmModal() {
+        elements.confirmModal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+        state.itemToDelete = null;
+    }
+
+    function confirmDeleteAction() {
+        if (state.itemToDelete) {
+            deleteMediaItem(state.itemToDelete);
+            closeConfirmModal();
+        }
+    }
+
+    // Media CRUD Operations
+    function addMediaItem(item) {
+        state.mediaItems.unshift(item);
+        saveToLocalStorage();
+        renderMediaGrid();
+        updateStats();
+        showToast(state.translations[state.currentLanguage].toast.added, 'success');
+    }
+
+    function updateMediaItem(updatedItem) {
+        state.mediaItems = state.mediaItems.map(item => 
+            item.id === updatedItem.id ? updatedItem : item
+        );
+        saveToLocalStorage();
+        renderMediaGrid();
+        updateStats();
+        showToast(state.translations[state.currentLanguage].toast.updated, 'success');
+    }
+
+    function deleteMediaItem(id) {
+        state.mediaItems = state.mediaItems.filter(item => item.id !== id);
+        saveToLocalStorage();
+        renderMediaGrid();
+        updateStats();
+        showToast(state.translations[state.currentLanguage].toast.deleted, 'success');
+    }
+
+    function saveToLocalStorage() {
+        try {
+            localStorage.setItem('mediaItems', JSON.stringify(state.mediaItems));
+        } catch (error) {
+            console.error('Error saving to localStorage:', error);
+            showToast('Error saving data', 'error');
+        }
+    }
+
+    // Form Handling
+    function handleFormSubmit(e) {
+        e.preventDefault();
+        
+        const title = elements.form.title.value.trim();
+        const type = elements.form.type.value;
+        const rating = parseInt(elements.form.rating.value) || 0;
+        const date = elements.form.date.value || new Date().toISOString().split('T')[0];
+        const notes = elements.form.notes.value.trim();
+
+        if (!title || !type) {
+            showToast(state.translations[state.currentLanguage].toast.error, 'error');
+            return;
+        }
+
+        handlePosterData((posterData) => {
+            const mediaData = {
+                id: state.currentItemId || Date.now(),
+                title,
+                type,
+                rating,
+                date,
+                notes,
+                poster: posterData,
+                createdAt: state.currentItemId 
+                    ? state.mediaItems.find(item => item.id === state.currentItemId)?.createdAt || new Date().toISOString()
+                    : new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+            
+            if (state.currentItemId) {
+                updateMediaItem(mediaData);
+            } else {
+                addMediaItem(mediaData);
+            }
+            
+            closeModal();
+        });
+    }
+
+    function handlePosterData(callback) {
+        if (state.posterFile === 'remove') {
+            callback(null);
+        } else if (state.posterFile === 'existing') {
+            const existingItem = state.mediaItems.find(item => item.id === state.currentItemId);
+            callback(existingItem?.poster || null);
+        } else if (state.posterFile) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                callback(event.target.result);
+            };
+            reader.onerror = function() {
+                showToast('Error reading image file', 'error');
+                callback(null);
+            };
+            reader.readAsDataURL(state.posterFile);
+        } else {
+            if (state.currentItemId) {
+                const existingItem = state.mediaItems.find(item => item.id === state.currentItemId);
+                callback(existingItem?.poster || null);
+            } else {
+                callback(null);
+            }
+        }
+    }
+
+    // Poster Upload
+    function handlePosterUpload(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // Validate file type
+        if (!file.type.match('image.*')) {
+            showToast(
+                state.currentLanguage === 'en' 
+                    ? 'Please select an image file' 
+                    : 'الرجاء اختيار ملف صورة',
+                'error'
+            );
+            elements.posterUpload.value = '';
+            return;
+        }
+
+        // Validate file size (max 2MB)
+        if (file.size > 2 * 1024 * 1024) {
+            showToast(
+                state.currentLanguage === 'en' 
+                    ? 'Image size should be less than 2MB' 
+                    : 'يجب أن يكون حجم الصورة أقل من 2 ميجابايت',
+                'error'
+            );
+            elements.posterUpload.value = '';
+            return;
+        }
+
+        state.posterFile = file;
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            elements.posterPreview.style.backgroundImage = `url(${event.target.result})`;
+            elements.posterPreview.innerHTML = '';
+        };
+        reader.onerror = function() {
+            showToast('Error reading image file', 'error');
+            resetPosterPreview();
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function removePosterImage() {
+        resetPosterPreview();
+        if (state.currentItemId) {
+            state.posterFile = 'remove';
+        } else {
+            state.posterFile = null;
+        }
+    }
+
+    // Star Rating
+    function handleStarClick() {
+        const rating = parseInt(this.getAttribute('data-rating'));
+        elements.form.rating.value = rating;
+        updateStars(rating);
+    }
+
+    function handleStarHover() {
+        const hoverRating = parseInt(this.getAttribute('data-rating'));
+        updateStars(hoverRating, true);
+    }
+
+    function handleStarMouseOut() {
+        updateStars(parseInt(elements.form.rating.value));
+    }
+
+    function updateStars(rating, isHover = false) {
+        elements.stars.forEach((star, index) => {
+            star.classList.remove('active', 'hover', 'fas', 'far');
+            if (index < rating) {
+                star.classList.add(isHover ? 'hover' : 'active');
+                star.classList.add('fas');
+            } else {
+                star.classList.add('far');
+            }
+        });
+    }
+
+    // Search and Filter
+    function handleSearch() {
+        if (elements.searchInput.value.length > 0) {
+            elements.clearSearch.style.display = 'block';
+        } else {
+            elements.clearSearch.style.display = 'none';
+        }
+        renderMediaGrid();
+    }
+
+    function clearSearch() {
+        elements.searchInput.value = '';
+        elements.clearSearch.style.display = 'none';
+        renderMediaGrid();
+    }
+
+    function handleTabSwitch() {
+        elements.tabButtons.forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+        renderMediaGrid();
+    }
+
+    // Rendering
+    function renderMediaGrid() {
+        elements.mediaGrid.innerHTML = '';
+        
+        const searchTerm = elements.searchInput.value.toLowerCase();
+        const activeTab = document.querySelector('.tab-btn.active').getAttribute('data-tab');
+        const sortBy = elements.sortSelect.value;
+        
+        let filteredItems = filterMediaItems(searchTerm, activeTab);
+        sortMediaItems(filteredItems, sortBy);
+        
+        if (filteredItems.length === 0) {
+            showEmptyState();
+            return;
+        }
+        
+        renderMediaItems(filteredItems);
+    }
+
+    function filterMediaItems(searchTerm, activeTab) {
+        return state.mediaItems.filter(item => {
+            const matchesSearch = !searchTerm || 
+                                item.title.toLowerCase().includes(searchTerm) || 
+                                (item.notes && item.notes.toLowerCase().includes(searchTerm));
+            const matchesTab = activeTab === 'all' || item.type === activeTab;
+            return matchesSearch && matchesTab;
+        });
+    }
+
+    function sortMediaItems(items, sortBy) {
+        items.sort((a, b) => {
+            switch (sortBy) {
+                case 'title':
+                    return a.title.localeCompare(b.title);
+                case 'rating':
+                    return b.rating - a.rating;
+                case 'date-watched':
+                    return new Date(b.date) - new Date(a.date);
+                default: // date-added
+                    return new Date(b.createdAt) - new Date(a.createdAt);
+            }
+        });
+    }
+
+    function showEmptyState() {
+        const t = state.translations[state.currentLanguage].empty;
+        elements.mediaGrid.innerHTML = `
+            <div class="empty-state">
+                <i class="${t.icon} empty-icon"></i>
+                <h3 class="empty-title">${t.title}</h3>
+                <p>${t.message}</p>
+            </div>
+        `;
+    }
+
+    function renderMediaItems(items) {
+        const fragment = document.createDocumentFragment();
+        
+        items.forEach(item => {
+            const mediaItem = document.createElement('div');
+            mediaItem.className = 'media-card animate__animated animate__fadeIn';
+            mediaItem.innerHTML = createMediaItemHTML(item);
+            
+            // Add event listeners to action buttons
+            const editBtn = mediaItem.querySelector('.edit-btn');
+            const deleteBtn = mediaItem.querySelector('.delete-btn');
+            
+            editBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openEditModal(item.id);
+            });
+            
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openConfirmModal(item.id);
+            });
+            
+            fragment.appendChild(mediaItem);
+        });
+        
+        elements.mediaGrid.appendChild(fragment);
+    }
+
+    function createMediaItemHTML(item) {
+        const t = state.translations[state.currentLanguage];
+        const typeText = getTypeText(item.type);
+        
+        const posterSection = item.poster 
+            ? `<div class="media-poster" style="background-image: url(${item.poster})">
+                  <span class="media-badge badge-${item.type}">${typeText}</span>
+               </div>`
+            : `<div class="media-poster no-poster">
+                  <i class="fas fa-film"></i>
+                  <span>${t.modal.posterText}</span>
+                  <span class="media-badge badge-${item.type}">${typeText}</span>
+               </div>`;
+        
+        const starsHTML = Array.from({ length: 5 }, (_, i) => 
+            `<i class="${i < item.rating ? 'fas' : 'far'} fa-star"></i>`
+        ).join('');
+        
+        return `
+            ${posterSection}
+            <div class="media-content">
+                <h3 class="media-title">${escapeHtml(item.title)}</h3>
+                <div class="media-meta">
+                    <span>${formatDate(item.date)}</span>
+                </div>
+                <div class="media-rating">
+                    <div class="stars">${starsHTML}</div>
+                </div>
+                ${item.notes ? `<div class="media-notes">${escapeHtml(item.notes)}</div>` : ''}
+                <div class="media-actions">
+                    <button class="action-btn edit-btn" title="Edit">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="action-btn delete-btn" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    function getTypeText(type) {
+        const t = state.translations[state.currentLanguage];
+        const typeIndex = type === 'film' ? 0 : type === 'show' ? 1 : 2;
+        return t.modal.typeOptions[typeIndex];
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function formatDate(dateString) {
+        if (!dateString) return state.currentLanguage === 'en' ? 'Not specified' : 'غير محدد';
+        
+        try {
+            const options = { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric'
+            };
+            
+            const date = new Date(dateString);
+            return date.toLocaleDateString(
+                state.currentLanguage === 'en' ? 'en-US' : 'ar-SA',
+                options
+            );
+        } catch (error) {
+            return dateString;
+        }
+    }
+
+    // Stats
+    function updateStats() {
+        const total = state.mediaItems.length;
+        const films = state.mediaItems.filter(item => item.type === 'film').length;
+        const shows = state.mediaItems.filter(item => item.type === 'show').length;
+        const anime = state.mediaItems.filter(item => item.type === 'anime').length;
+
+        elements.stats.total.textContent = total;
+        elements.stats.film.textContent = films;
+        elements.stats.show.textContent = shows;
+        elements.stats.anime.textContent = anime;
+    }
+
+    // Toast Notification
+    function showToast(message, type = 'info') {
+        elements.toast.textContent = message;
+        elements.toast.className = `toast show ${type}`;
+        
+        setTimeout(() => {
+            elements.toast.classList.remove('show');
+        }, 3000);
+    }
+});
+    </script>
+</body>
+</html>
